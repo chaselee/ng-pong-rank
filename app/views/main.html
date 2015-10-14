@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <h2>Add Players</h2>
+      <form role="form" ng-submit="addPlayer()" class="form">
+        <div class="form-group">
+          <label class="sr-only" for="firstName">Firt Name</label>
+          <input type="text" ng-model="$storage.player.firstName" required class="form-control" id="firstName" placeholder="First Name">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="lastName">Last Name</label>
+          <input type="text" ng-model="$storage.player.lastName" required class="form-control" id="lastName" placeholder="Last Name">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="startingPoints">Starting Points</label>
+          <input type="number" ng-model="$storage.player.points" required class="form-control" id="startingPoints" placeholder="Starting Points">
+        </div>
+        <div class="form-group ">
+          <input type="submit" class="btn btn-primary" value="Add Player">
+        </div>
+      </form>
+    </div>
+    <div ng-show="$storage.players.length > 1" class="col-sm-6">
+      <h2>Add Games</h2>
+      <form role="form" ng-submit="addGame()" class="form">
+        <div class="form-group">
+          <label class="sr-only" for="playerOne">Player One</label>
+          <select ng-model="$storage.game.playerOne" ng-options="player.id as (player.lastName + ', ' + player.firstName) for player in $storage.players | orderBy: 'lastName' | filter: $storage.game.playerTwo && { id : '!'+$storage.game.playerTwo }" required class="form-control" id="playerOne" placeholder="Player One">
+            <option value="">-- player one --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="pointsOne">Points Scored</label>
+          <input type="number" ng-model="$storage.game.pointsOne" required class="form-control" id="pointsOne" placeholder="Points Scored">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="playerTwo">Player Two</label>
+          <select ng-model="$storage.game.playerTwo" ng-options="player.id as (player.lastName + ', ' + player.firstName) for player in $storage.players | orderBy: 'lastName' | filter: $storage.game.playerOne && { id : '!'+$storage.game.playerOne }" required class="form-control" id="playerTwo" placeholder="Player Two">
+            <option value="">-- player two --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="pointsTwo">Points Scored</label>
+          <input type="number" ng-model="$storage.game.pointsTwo" required class="form-control" id="pointsTwo" placeholder="Points Scored">
+        </div>
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary" value="Add Game">
+        </div>
+      </form>
+    </div>
+  </div>
+  <h2>Rankings</h2>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="player in $storage.players | orderBy:'-points'">
+          <th>{{ $index + 1 }}</th>
+          <th>{{ player.firstName + ' ' + player.lastName }}</th>
+          <th>{{ player.points }}</th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div ng-show="$storage.players.length === 0">
+    <p class="text-center text-info">It looks like you need to add players.</p>
+  </div>
+</div>
