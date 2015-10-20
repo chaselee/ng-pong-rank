@@ -11,6 +11,7 @@ angular.module('pongRankApp')
   .controller('MainCtrl', function ($scope, $localStorage) {
     $scope.$storage = $localStorage;
     $scope.$storage.players = $localStorage.players || [];
+    $scope.$storage.games = $localStorage.games || [];
     $scope.addPlayer = function () {
       var sortedPlayers = $scope.$storage.players.sort(function(a, b) {
           return a.id - b.id;
@@ -21,15 +22,16 @@ angular.module('pongRankApp')
           id: newID,
           firstName: $scope.$storage.player.firstName,
           lastName: $scope.$storage.player.lastName,
+          fullName: $scope.$storage.player.firstName + ' ' + $scope.$storage.player.lastName,
           points: $scope.$storage.player.points
         }
       );
       $scope.$storage.player = {};
     };
-    $scope.addPoints = function (id, points) {
-      $scope.$storage.players.some(function (player) {
-        if (player.id === id) {
-          player.points += points;
+    $scope.addPoints = function (player, points) {
+      $scope.$storage.players.some(function (p) {
+        if (player.id === p.id) {
+          p.points += points;
           return true;
         }
       });
@@ -41,6 +43,13 @@ angular.module('pongRankApp')
       } else {
         $scope.addPoints($scope.$storage.game.playerTwo, Math.abs(pointDiff));
       }
+
+      $scope.$storage.game.datePlayed = new Date().getTime();
+      $scope.$storage.games.push($scope.$storage.game);
       $scope.$storage.game = {};
+    };
+    $scope.formatDate = function(date) {
+      date = new Date(date);
+      return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
     };
   });
