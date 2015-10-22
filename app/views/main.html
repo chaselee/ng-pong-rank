@@ -43,6 +43,11 @@
           <label class="sr-only" for="pointsTwo">Points Scored</label>
           <input type="number" ng-model="$storage.game.pointsTwo" required class="form-control" id="pointsTwo" placeholder="Points Scored">
         </div>
+        <div class="checkbox">
+          <label>
+            <input ng-model="$storage.game.challenge" type="checkbox"> Challenge!
+          </label>
+        </div>
         <div class="form-group">
           <input type="submit" class="btn btn-primary" value="Add Game">
         </div>
@@ -71,13 +76,14 @@
   <div ng-show="$storage.players.length === 0">
     <p class="text-center text-info">It looks like you need to add players.</p>
   </div>
-  <div ng-show="$storage.games.length">
+  <div>
     <h2>Games</h2>
     <div class="table-responsive">
       <table class="table table-hover">
         <thead>
           <tr>
             <th>Date</th>
+            <th>Challenge</th>
             <th>Player One</th>
             <th>Points</th>
             <th>Player Two</th>
@@ -87,6 +93,7 @@
         <tbody>
           <tr ng-repeat="game in $storage.games | orderBy:'-datePlayed'">
             <th>{{ formatDate(game.datePlayed) }}</th>
+            <th>{{ game.challenge ? 'Yes' : 'No' }}</th>
             <th>{{ game.playerOne.fullName }}</th>
             <th>{{ game.pointsOne }}</th>
             <th>{{ game.playerTwo.fullName }}</th>
@@ -95,5 +102,8 @@
         </tbody>
       </table>
     </div>
+  </div>
+  <div ng-show="$storage.games.length === 0">
+    <p class="text-center text-info">No games have been played yet. Why don't you challenge someone?</p>
   </div>
 </div>
