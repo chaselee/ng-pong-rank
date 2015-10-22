@@ -29,6 +29,8 @@ angular.module('pongRankApp')
       $scope.$storage.player = {};
     };
     $scope.addPoints = function (player, points) {
+      if (!$scope.$storage.game.challenge) return;
+
       $scope.$storage.players.some(function (p) {
         if (player.id === p.id) {
           p.points += points;
@@ -39,10 +41,6 @@ angular.module('pongRankApp')
     $scope.addGame = function () {
       $scope.$storage.game.datePlayed = new Date().getTime();
       $scope.$storage.games.push($scope.$storage.game);
-      if (!$scope.$storage.game.challenge) {
-        $scope.$storage.game = {};
-        return;
-      }
 
       var pointDiff = $scope.$storage.game.pointsOne - $scope.$storage.game.pointsTwo;
       if (pointDiff > 0) {
